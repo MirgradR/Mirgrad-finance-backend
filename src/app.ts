@@ -1,14 +1,16 @@
 import express from 'express'
-import dotenv from 'dotenv'
-import userRouter from './routes/user-router'
-
-dotenv.config()
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+import authRouter from './routes/auth-router'
+import errorMiddleware from './middlewares/error-middleware'
 
 const app = express()
 
 app.use(express.json())
-app.use('/api', userRouter)
-
+app.use(cookieParser())
+app.use(cors())
+app.use('/api', authRouter)
+app.use(errorMiddleware)
 
 app.use((error: Error, res: any) => {
     console.error('[ERROR MIDDLEWARE]', error.message)
