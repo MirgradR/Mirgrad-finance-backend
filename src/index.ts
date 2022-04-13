@@ -1,17 +1,6 @@
 import mongoose, { ConnectOptions } from 'mongoose'
-import dotenv from 'dotenv'
 import app from './app'
-import configService from './services/config-service'
-
-dotenv.config()
-
-enum ServerCongigs {
-    PORT = 'PORT',
-    DB_URL = 'DB_URL'
-}
-
-const DB_URL = configService.getByKey(ServerCongigs.DB_URL)
-const PORT = configService.getByKey(ServerCongigs.PORT)
+import { DB_URL, PORT } from './constants/auth-constants'
 
 async function startApp() {
     try {
