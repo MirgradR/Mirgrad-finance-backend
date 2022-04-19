@@ -15,7 +15,7 @@ class MailService {
             }
         })
     }
-    async sendActivationMail(to, link) {
+    async sendActivationMail(to: string, link: string) {
         await this.transporter.sendMail({
             from: SMPT_USER,
             to,
