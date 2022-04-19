@@ -1,7 +1,15 @@
 import ApiError from '../exceptions/api-error'
-import tokenService from '../services/token-service'
+import { Next } from '../controllers/auth-controller'
+import tokenService, { ValidateTokenData } from '../services/token-service'
 
-export default function (req, res, next) {
+interface Request {
+    headers: {
+        authorization: string
+    },
+    user: ValidateTokenData
+}
+
+export default function (req: Request, res: unknown, next: Next) {
     try {
         const authorizationHeader = req.headers.authorization
         if (!authorizationHeader) {
@@ -17,7 +25,7 @@ export default function (req, res, next) {
         if (!userData) {
             return next(ApiError.UnauthorizedError())
         }
-        req.user = userData
+        req.user = userData as ValidateTokenData
         next()
     } catch (error) {
         return next(ApiError.UnauthorizedError())
