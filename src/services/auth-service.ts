@@ -86,17 +86,17 @@ class AuthService {
         if (!refreshToken) {
             throw ApiError.UnauthorizedError()
         }
-        const userData = await TokenService.validateRefreshToken(refreshToken)
+        const userData = TokenService.validateRefreshToken(refreshToken)
         const tokenFromDB: FindToken = await TokenService.findToken(refreshToken)
 
-        if (!userData || !tokenFromDB) {
+        if (!userData) {
             throw ApiError.UnauthorizedError()
         }
         const user: ResponseData = await User.findById((userData as ValidateTokenData).id )
         const userDto = new AuthDto(user)
        
         const tokens = TokenService.generateTokens({ ...userDto })
-        
+
         await TokenService.saveToken(userDto.id, tokens.refreshToken)
 
         return {
