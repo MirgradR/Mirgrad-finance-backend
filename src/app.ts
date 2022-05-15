@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth-router'
+import stocksRouter from './routes/stocks-router'
 import errorMiddleware from './middlewares/error-middleware'
 
 const app = express()
@@ -13,6 +14,7 @@ app.use(cors({
     credentials: true
 }))
 app.use('/api', authRouter)
+app.use('/api', stocksRouter)
 app.use(errorMiddleware)
 
 app.use((error: Error, res: any) => {
