@@ -1,7 +1,6 @@
+import cron from 'node-cron'
 import Stock from '../models/Stocks/Stock'
 import finnhubClient from '../finnhub/finhub-client'
-
-const cron = require('node-cron')
 
 const updateStocks = () => {
     finnhubClient.stockSymbols("US", { 'limit': 'n' }, async (error, data) => {
