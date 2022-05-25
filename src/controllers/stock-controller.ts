@@ -2,19 +2,23 @@ import { Next } from './auth-controller'
 import stockService from '../services/stock-service'
 
 interface ResponseStocks {
-    _id: string,
-    description: string,
-    displaySymbol: string,
-    symbol: string,
-    type: string,
-    mic: string,
-    figi: string,
-    shareClassFIGI: string,
-    currency: string,
-    symbol2: string,
-    isin: string | null,
-    __v: number
+    stocks: {
+        _id: string,
+        description: string,
+        displaySymbol: string,
+        symbol: string,
+        type: string,
+        mic: string,
+        figi: string,
+        shareClassFIGI: string,
+        currency: string,
+        symbol2: string,
+        isin: string | null,
+        __v: number
+    }[],
+    count: number
 }
+
 interface Request {
     query: {
         offset: number,
@@ -30,7 +34,8 @@ class StockController {
     async getStocks(req: Request, res: Response, next: Next) {
         try {
             const { offset, limit, name } = req.query;
-            const stocks: ResponseStocks[] = await stockService.getStocks(offset, limit, name)
+            const stocks: ResponseStocks = await stockService.getStocks(offset, limit, name)
+            //@ts-ignore
             return res.json(stocks)
         } catch (error) {
             next(error)

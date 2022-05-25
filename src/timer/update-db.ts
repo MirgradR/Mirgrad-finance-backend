@@ -1,14 +1,16 @@
 import cron from 'node-cron'
-import Stock from '../models/Stocks/Stock'
+import Stock, { StockResponse } from '../models/Stocks/Stock'
 import finnhubClient from '../finnhub/finhub-client'
+import { simpleSort } from '../helpers/sort'
+import { MirgradFinance } from '../constants/my-company'
 
 const updateStocks = () => {
-    finnhubClient.stockSymbols("US", { 'limit': 'n' }, async (error, data) => {
+    finnhubClient.stockSymbols("US", { 'limit': 'n' }, async (error: Error, data: StockResponse[]) => {
         if (error) {
             throw new Error('get stocks error: ' + error)
         }
         await Stock.deleteMany()
-        await Stock.insertMany(data)
+        await Stock.insertMany(simpleSort([...data, MirgradFinance], 'symbol') )
         console.log('[-Update stocks is successfull-]')
     });
 }
