@@ -10,7 +10,7 @@ const updateStocks = () => {
             throw new Error('get stocks error: ' + error)
         }
         await Stock.deleteMany()
-        await Stock.insertMany(simpleSort([...data, MirgradFinance], 'symbol') )
+        await Stock.insertMany(simpleSort([...data, MirgradFinance.stock], 'symbol') )
         console.log('[-Update stocks is successfull-]')
     });
 }

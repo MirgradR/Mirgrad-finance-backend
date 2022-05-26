@@ -5,5 +5,6 @@ import stockController from '../controllers/stock-controller'
 const stocksRouter = new Router()
 
 stocksRouter.get('/stocks', stockController.getStocks)
+stocksRouter.get('/stocks/:symbol/profile', stockController.getStockProfile)
 
 export default stocksRouter
