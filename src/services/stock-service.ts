@@ -1,6 +1,7 @@
+import ApiError from '../exceptions/api-error'
 import { MirgradFinance } from '../constants/my-company'
 import finnhubClient from '../finnhub/finhub-client'
-import Stock, { StockProfile } from '../models/Stocks/Stock'
+import Stock, { StockPrice, StockProfile } from '../models/Stocks/Stock'
 
 class StockService {
     async getStocks(offset: number = 1, limit: number = 20, name = '') {
@@ -22,10 +23,21 @@ class StockService {
         }
         finnhubClient.companyProfile2({'symbol': symbol.toUpperCase()}, (error: Error, data: StockProfile) => {
             if (error) {
-                throw new Error(error.message)
+                throw ApiError.BadRequest(error.message)
             }
             returnProfile(data)
-        });
+        })
+    }
+    async getStockPrice(symbol: string, returnPrice: (data: StockPrice) => void) {
+        if (symbol === 'MIRF') {
+            symbol = 'FB'
+        }
+        finnhubClient.quote(symbol.toUpperCase(), (error: Error, data: StockPrice) => {
+            if (error) {
+                throw ApiError.BadRequest(error.message)
+            }
+            returnPrice(data)
+        })
     }
 }
 
