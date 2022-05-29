@@ -1,6 +1,6 @@
 import { Next } from './auth-controller'
 import stockService from '../services/stock-service'
-import { StockProfile } from '../models/Stocks/Stock'
+import { StockPrice, StockProfile } from '../models/Stocks/Stock'
 
 interface ResponseStocks {
     stocks: {
@@ -36,6 +36,9 @@ interface ResponseGetStocks {
 interface ResponseGetStockProfile {
     json: (arg0: StockProfile) => void
 }
+interface ResponseGetStockPrice {
+    json: (arg0: StockPrice) => void
+}
 
 class StockController {
     async getStocks(req: Request, res: ResponseGetStocks, next: Next) {
@@ -55,6 +58,17 @@ class StockController {
                 return res.json(profile)
             }
             await stockService.getStockProfile(symbol, returnProfile)  
+        } catch (error) {
+            next(error)
+        }
+    }
+    async getStockPrice(req: Request, res: ResponseGetStockPrice, next: Next) {
+        try {
+            const { symbol } = req.params;
+            const returnPrice = (price: StockPrice) => {
+                return res.json(price)
+            }
+            await stockService.getStockPrice(symbol, returnPrice)  
         } catch (error) {
             next(error)
         }
