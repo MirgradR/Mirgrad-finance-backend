@@ -10,7 +10,7 @@ const updateStocks = () => {
             throw new Error('get stocks error: ' + error)
         }
         await Stock.deleteMany()
-        await Stock.insertMany(simpleSort([...data, MirgradFinance.stock], 'symbol') )
+        await Stock.insertMany(simpleSort([...data.filter(elem => elem.type === 'Common Stock'), MirgradFinance.stock], 'symbol') )
         console.log('[-Update stocks is successfull-]')
     });
 }

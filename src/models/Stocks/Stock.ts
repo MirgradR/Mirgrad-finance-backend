@@ -16,13 +16,13 @@ export interface StockResponse {
 }
 
 export interface StockPrice {
-    o: number,  //Current price
-    h: number,  //Change
-    l: number,  //Percent change
-    c: number,  //High price of the day
-    pc: number, //Low price of the day
-    d: number,  //Open price of the day
-    dp: number  //Previous close price
+    o: number,  //Open price of the day
+    h: number,  //High price of the day
+    l: number,  //Low price of the day
+    c: number,  //Current price
+    pc: number, //Previous close price
+    d: number,  //Change
+    dp: number  //Percent change
 }
 
 export interface StockProfile {
