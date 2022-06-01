@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth-router'
 import stocksRouter from './routes/stocks-router'
 import errorMiddleware from './middlewares/error-middleware'
+import newsRouter from './routes/news-router'
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(cors({
 }))
 app.use('/api', authRouter)
 app.use('/api', stocksRouter)
+app.use('/api', newsRouter)
 app.use(errorMiddleware)
 
 app.use((error: Error, res: any) => {
