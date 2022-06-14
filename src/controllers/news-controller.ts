@@ -24,7 +24,7 @@ class NewsController {
             const { category } = req.params;
             const { offset, limit } = req.query;
             const returnNews = (news: News[]) => {
-                return res.json(paginateData(news, limit, offset) )
+                return res.json(paginateData(news, limit, offset))
             }
             await newsService.getNews(category, returnNews)  
         } catch (error) {
