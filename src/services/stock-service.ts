@@ -2,11 +2,15 @@ import ApiError from '../exceptions/api-error'
 import { MirgradFinance } from '../constants/my-company'
 import finnhubClient from '../finnhub/finhub-client'
 import Stock, { StockPrice, StockProfile } from '../models/Stocks/Stock'
+import { paginateData } from '../helpers/paginator'
 
 class StockService {
     async getStocks(offset: number = 1, limit: number = 20, name = '') {
         if (name !== '') {
-            offset = null
+            const stocks = await Stock.find({
+                'description': { $regex: new RegExp(name, 'ig') }
+            })
+            return { stocks: paginateData(stocks, limit, offset), count: stocks.length }
         }
         const count = await Stock.countDocuments()
         const stocks = await Stock.find({
