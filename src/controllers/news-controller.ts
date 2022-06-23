@@ -8,9 +8,12 @@ interface Request {
         offset: number,
         limit: number,
         name: string,
+        from: string,
+        to: string
     },
     params?: {
-        category: string
+        category: string,
+        company: string
     }
 }
 
@@ -27,6 +30,18 @@ class NewsController {
                 return res.json(paginateData(news, limit, offset))
             }
             await newsService.getNews(category, returnNews)  
+        } catch (error) {
+            next(error)
+        }
+    }
+    async getNewsOfCompany(req: Request, res: ResponseGetNews, next: Next) {
+        try {
+            const { company } = req.params;
+            const { from, to, limit, offset } = req.query;
+            const returnNewsOfCompany = (news: News[]) => {
+                return res.json(paginateData(news, limit, offset))
+            }
+            await newsService.getNewsOfCompany(company, from, to, returnNewsOfCompany)  
         } catch (error) {
             next(error)
         }
